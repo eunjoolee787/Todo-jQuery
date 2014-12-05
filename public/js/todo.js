@@ -6,11 +6,23 @@ $(function(){
         var checkbox = $('<input>', {
           type: 'checkbox'
         });
-        var list = $('<li>', {
-          html: checkbox
-        });
-        list.append(value);
-        $(".item-list").append(list);
+        var list = $('<li>');
+        list.append(checkbox);
+        list.addClass("item");
+        var span = $('<span>');
+        span.append(value);
+        list.append(span);
+        $(".item-list").append(list); // this adds new item to list
+        $(this).val(''); // this empty the text field
+      }
+    });
+
+    $(".item-list").on("click",'input[type="checkbox"]', function(){
+      
+      if(this.checked){
+        $("li").addClass('newclass');
+      } else {
+        $("li").removeClass('newclass');
       }
     });
   });
