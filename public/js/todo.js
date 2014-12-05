@@ -20,9 +20,9 @@ $(function(){
     $(".item-list").on("click",'input[type="checkbox"]', function(){
       
       if(this.checked){
-        $("li").addClass('newclass');
+        $(this).siblings("span").first().addClass("strike");
       } else {
-        $("li").removeClass('newclass');
+        $(this).siblings("span").first().removeClass("strike");
       }
     });
   });
