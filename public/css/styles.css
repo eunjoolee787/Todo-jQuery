@@ -1,3 +1,7 @@
+h1{
+  background-color: red;
+}
+
 span.strike{
   text-decoration: line-through;
 }
