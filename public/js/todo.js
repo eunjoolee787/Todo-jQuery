@@ -9,22 +9,28 @@
 
 //INSTRUCTIONS-LEVEL 2
 //In index.html add standard check boxes to the left of each list item.
-$(function(){ //jquery
+$(function(){ //$(document).ready() shortcut
   $("#userInput").keypress(function(event){ //add an eventlistener on the text input field that listens for the [enter] key to be pressed. (okay)
       if(event.which == 13){ //when this event triggers (okay)
         //alert('You pressed enter!'); //  //TESTER ONLY!
-        var value = $("#userInput").val(); //create var of when user inputs data
-        var checkbox = $('<input>', {  //create var of checkbox
-          type: 'checkbox' //object of checkbox
+        var userInput = $("#userInput").val(); //create var of when user inputs data
+
+        var newToDo = $('<li>'); //create a new li element with jquery
+        newToDo.addClass("item"); //adding a class to the new li item
+        
+        var span = $('<span>'); //create a new span and saving it to a variable to use later
+        span.append(userInput); //append(put into) userInput into span
+        newToDo.append(span); //append(put into) span into new li item
+        
+        var checkbox = $('<input>', {  //create a new input-checkout and saving it to a variable to use later
+          type: 'checkbox' //assigning attributes
         });
-        var list = $('<li>'); //create a list of li's
-          list.append(checkbox); //adds the value of the text input, (okay)
-          list.addClass("item"); //as a new list item, (okay)
-        var span = $('<span>'); //create a var called span's
-          span.append(value); //add the value to the span's
-          list.append(span); //add the span's to the list's
-        $(".item-list").append(list); // this adds new item to list
-        $(this).val(''); // erase the value of the text input field (okay)
+        newToDo.prepend(checkbox); //append checkbox to the new li item
+
+        // add elements to DOM
+        $(".item-list").append(newToDo); //append newToDo into the .item-list
+
+        $(this).val(''); // erase the userInput of the text input field (okay)
       } //end of .keypress
   }); //end of function
 
