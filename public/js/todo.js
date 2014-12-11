@@ -42,9 +42,12 @@ $(function(){ //$(document).ready() shortcut
         $(this).siblings("span").first().addClass("strike");//return checkbox of span and ADD "strike" to the first selection
       } else {//else 
         $(this).siblings("span").first().removeClass("strike");//else return checkbox of span and REMOVE "strike" to the first selection
-      }
-    });
-  });
+      }//end of .siblings
+    });//end of this.checked
+
+  
+
+  });//end of function
 
 // notes-understand document.ready
 // $(document).ready(function(){
