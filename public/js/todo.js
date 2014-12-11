@@ -45,7 +45,26 @@ $(function(){ //$(document).ready() shortcut
       }//end of .siblings
     });//end of this.checked
 
-  
+  $("button#save").click(function (e) {
+    
+   var list = [];
+   $("#list_container ul li").each(function (i, obj){
+    // console.log('obj', $(obj).find("span".html() );
+    list.push({
+      index: i,
+      title: $(obj).find("span".html() );
+      completed: $(obj).find("input:checked").length > 0);
+    });
+   });
+
+  var json = JSON.stringify(list);
+
+    $.post("/save", 
+    {
+      todo_json_data: json
+    }
+  });
+  });
 
   });//end of function
 
