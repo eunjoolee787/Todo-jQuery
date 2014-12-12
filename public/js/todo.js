@@ -9,28 +9,22 @@
 
 //INSTRUCTIONS-LEVEL 2
 //In index.html add standard check boxes to the left of each list item.
+
 $(function(){ //$(document).ready() shortcut
-  function itemsLeft(){   
-    var count = $(".item").length;
+
+//Add working counter that shows how many items the user has left to do.  
+  function itemsLeft() { // create a function 
+    var count = $(".item").length; //create a count var that finds the length of .item
+    return count; // return the count
+  }
+  function itemsCompleted() {
+    var count = $(".strike").length;
     return count;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function updateStatus(count, completed) {
+    $("div#count").text(count + " items in list, " + completed + " items completed"); //create div#count and add text that shows the count in the list
+  }
 
   $("#userInput").keypress(function(event){ //add an eventlistener on the text input field that listens for the [enter] key to be pressed. (okay)
       if(event.which == 13){ //when this event triggers (okay)
@@ -53,10 +47,11 @@ $(function(){ //$(document).ready() shortcut
         $(".item-list").append(newToDo); //append newToDo into the .item-list
 
         $(this).val(''); // erase the userInput of the text input field (okay)
+        
         //TO DO-goal is update div#count with text & item in list
-        var count = itemsLeft();
-
-        $("div#count").text(count + " items in list");
+        var count = itemsLeft(); //create a count var to find out the itemsLeft
+        var completed = itemsCompleted();
+        updateStatus(count, completed);
         
       } //end of .keypress
   }); //end of function
@@ -70,6 +65,9 @@ $(function(){ //$(document).ready() shortcut
       } else {//else 
         $(this).siblings("span").first().removeClass("strike");//else return checkbox of span and REMOVE "strike" to the first selection
       }//end of .siblings
+      var count = itemsLeft(); //create a count var to find out the itemsLeft
+      var completed = itemsCompleted();
+      updateStatus(count, completed);  
     });//end of this.checked
 
 
