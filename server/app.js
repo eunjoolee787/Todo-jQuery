@@ -1,7 +1,9 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true}));
 
 // app.get('/', function (req, res) {
 //   res.send('Hello World!')
@@ -10,8 +12,10 @@ app.use(express.static('public'));
 
 app.post('/save', function (req, res) {
  
-  console.log('user sent post request');
-  res.send("puppies");
+  //console.log('user sent post request');
+  console.log(req.body);
+  // res.send("puppies");
+  res.json({status: "succcess"});
 
   // fs.writeFile("list.json");
 });
