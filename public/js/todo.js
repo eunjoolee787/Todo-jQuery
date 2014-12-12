@@ -11,8 +11,36 @@
 //In index.html add standard check boxes to the left of each list item.
 
 $(function(){ //$(document).ready() shortcut
+//auto load the save file
+  $.get("todo_save.json",function(data) {//create a .get function to json.stringify
+    // var items_list = $.parseJSON(data);
+    console.log(data);//tester only
+    for(var i = 0; i < data.length; i++){//create a for loop to go thru the data
+      console.log(data[i]);//log the length of data
 
-//Add working counter that shows how many items the user has left to do.  
+      var newToDo = $('<li>');//create a li in newToDo var
+      newToDo.addClass("item");//create a .item class
+      var checkbox = $('<input>', {  //create a new input-checkout and saving it to a variable to use later
+        type: 'checkbox' //assigning attributes
+      });//end of checkbox var
+      checkbox.prop('checked', data[i].completed); //set input as checked
+      newToDo.prepend(checkbox);//add checkbox into newToDo
+      var span = $('<span>'); //create a span var
+      span.text(data[i].title); //find the text in data .title
+
+      if(data[i].completed){ //if data loop's is completed
+        span.addClass("strike"); //add the .strike to span
+      }
+
+      newToDo.append(span); //add the span to newToDo
+      $(".item-list").append(newToDo); //add the newToDo to .item-list
+      var count = itemsLeft(); //create a count var to get the itemsLeft
+      var completed = itemsCompleted(); //create a var to get the itemsCompleted
+      updateStatus(count, completed); //create a updateStatus
+    }; //end of for loop
+  });  //end of .get function to create a json.stringify
+
+//Add working counter that shows how many item the user has left to do.  
   function itemsLeft() { // create a function to contain itemsLeft
     var count = $(".item").length; //create a count var that gets the length of .item
     return count; // return the count
