@@ -11,7 +11,7 @@ app.use(express.static('public'));
 app.post('/save', function (req, res) {
  
   console.log('user sent post request');
-  res.send("ok");
+  res.send("puppies");
 
   // fs.writeFile("list.json");
 });
