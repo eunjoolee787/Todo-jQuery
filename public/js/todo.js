@@ -10,6 +10,28 @@
 //INSTRUCTIONS-LEVEL 2
 //In index.html add standard check boxes to the left of each list item.
 $(function(){ //$(document).ready() shortcut
+  function itemsLeft(){   
+    var count = $(".item").length;
+    return count;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   $("#userInput").keypress(function(event){ //add an eventlistener on the text input field that listens for the [enter] key to be pressed. (okay)
       if(event.which == 13){ //when this event triggers (okay)
         //alert('You pressed enter!'); //  //TESTER ONLY!
@@ -31,6 +53,11 @@ $(function(){ //$(document).ready() shortcut
         $(".item-list").append(newToDo); //append newToDo into the .item-list
 
         $(this).val(''); // erase the userInput of the text input field (okay)
+        //TO DO-goal is update div#count with text & item in list
+        var count = itemsLeft();
+
+        $("div#count").text(count + " items in list");
+        
       } //end of .keypress
   }); //end of function
 
@@ -45,26 +72,29 @@ $(function(){ //$(document).ready() shortcut
       }//end of .siblings
     });//end of this.checked
 
-  $("button#save").click(function (e) {
+
+
+
+  // $("button#save").click(function (e) {
     
-   var list = [];
-   $("#list_container ul li").each(function (i, obj){
-    // console.log('obj', $(obj).find("span".html() );
-    list.push({
-      index: i,
-      title: $(obj).find("span".html() );
-      completed: $(obj).find("input:checked").length > 0);
-    });
-   });
+  //  var list = [];
+  //  $("#list_container ul li").each(function (i, obj){
+  //   // console.log('obj', $(obj).find("span".html() );
+  //   list.push({
+  //     index: i,
+  //     title: $(obj).find("span".html() );
+  //     completed: $(obj).find("input:checked").length > 0);
+  //   });
+  //  });
 
-  var json = JSON.stringify(list);
+  // var json = JSON.stringify(list);
 
-    $.post("/save", 
-    {
-      todo_json_data: json
-    }
-  });
-  });
+  //   $.post("/save", 
+  //   {
+  //     todo_json_data: json
+  //   }
+  // });
+  // });
 
   });//end of function
 
