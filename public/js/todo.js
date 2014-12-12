@@ -58,19 +58,21 @@ $(function(){ //$(document).ready() shortcut
 
 //INSTRUCTIONS-LEVEL 2
 //In todo.js add an event listener that strikes out the todo item if it's checkbox has been checked:
-    $(".item-list").on("click",'input[type="checkbox"]', function(){//when the item is click, make a checkbox function
-      
-      if(this.checked){//if the checkbox is checked
-        $(this).siblings("span").first().addClass("strike");//return checkbox of span and ADD "strike" to the first selection
-      } else {//else 
-        $(this).siblings("span").first().removeClass("strike");//else return checkbox of span and REMOVE "strike" to the first selection
-      }//end of .siblings
-      var count = itemsLeft(); //create a count var to find out the itemsLeft
-      var completed = itemsCompleted();
-      updateStatus(count, completed);  
-    });//end of this.checked
+  $(".item-list").on("click",'input[type="checkbox"]', function(){//when the item is click, make a checkbox function
+    
+    if(this.checked){//if the checkbox is checked
+      $(this).siblings("span").first().addClass("strike");//return checkbox of span and ADD "strike" to the first selection
+    } else {//else 
+      $(this).siblings("span").first().removeClass("strike");//else return checkbox of span and REMOVE "strike" to the first selection
+    }//end of .siblings
+    var count = itemsLeft(); //create a count var to find out the itemsLeft
+    var completed = itemsCompleted();
+    updateStatus(count, completed);  
+  });//end of this.checked
 
-
+  $("#saveButton").on("click", function() {
+    console.log("click");
+  });
 
 
   // $("button#save").click(function (e) {
