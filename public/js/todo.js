@@ -18,25 +18,11 @@ $(function(){ //$(document).ready() shortcut
     for(var i = 0; i < data.length; i++){//create a for loop to go thru the data
       console.log(data[i]);//log the length of data
 
-      var newToDo = $('<li>');//create a li in newToDo var
-      newToDo.addClass("item");//create a .item class
-      var checkbox = $('<input>', {  //create a new input-checkout and saving it to a variable to use later
-        type: 'checkbox' //assigning attributes
-      });//end of checkbox var
-      checkbox.prop('checked', data[i].completed); //set input as checked
-      newToDo.prepend(checkbox);//add checkbox into newToDo
-      var span = $('<span>'); //create a span var
-      span.text(data[i].title); //find the text in data .title
+      createNewItem(data[i].title, data[i].completed)
 
-      if(data[i].completed){ //if data loop's is completed
-        span.addClass("strike"); //add the .strike to span
-      }
-
-      newToDo.append(span); //add the span to newToDo
-      $(".item-list").append(newToDo); //add the newToDo to .item-list
-      var count = itemsLeft(); //create a count var to get the itemsLeft
-      var completed = itemsCompleted(); //create a var to get the itemsCompleted
-      updateStatus(count, completed); //create a updateStatus
+      // newToDo.append(span); //add the span to newToDo
+      // $(".item-list").append(newToDo); //add the newToDo to .item-list
+      updateStatus(); //create a updateStatus
     }; //end of for loop
   });  //end of .get function to create a json.stringify
 
@@ -50,36 +36,42 @@ $(function(){ //$(document).ready() shortcut
     return count; //return the count
   }
 
-  function updateStatus(count, completed) { //create a function to contain updateStatus
-    $("div#count").text(count + " items in list, " + completed + " items completed"); //create div#count and add text that shows the count in the list
+  function updateStatus() { //create a function to contain updateStatus
+    $("div#count").text(itemsLeft() + " items in list, " + itemsCompleted() + " items completed"); //create div#count and add text that shows the count in the list
   }
+
+  function createNewItem (userInput, isChecked) {
+    var newToDo = $('<li>'); //create a new li element with jquery
+    newToDo.addClass("item"); //adding a class to the new li item
+    
+    var span = $('<span>'); //create a new span and saving it to a variable to use later
+    span.append(userInput); //append(put into) userInput into span
+    newToDo.append(span); //append(put into) span into new li item
+
+    var checkbox = $('<input>', {  //create a new input-checkout and saving it to a variable to use later
+      type: 'checkbox' //assigning attributes
+    });
+    if(isChecked){ //if data loop's is completed
+        span.addClass("strike"); //add the .strike to span
+        checkbox.prop("checked", true);
+      }
+    newToDo.prepend(checkbox); //append checkbox to the new li item
+
+    // add elements to DOM
+    $(".item-list").append(newToDo); //append newToDo into the .item-list
+  }//end of createNewItem
 
   $("#userInput").keypress(function(event){ //add an eventlistener on the text input field that listens for the [enter] key to be pressed. (okay)
       if(event.which == 13){ //when this event triggers (okay)
         //alert('You pressed enter!'); //  //TESTER ONLY!
         var userInput = $("#userInput").val(); //create var of when user inputs data
 
-        var newToDo = $('<li>'); //create a new li element with jquery
-        newToDo.addClass("item"); //adding a class to the new li item
-        
-        var span = $('<span>'); //create a new span and saving it to a variable to use later
-        span.append(userInput); //append(put into) userInput into span
-        newToDo.append(span); //append(put into) span into new li item
-        
-        var checkbox = $('<input>', {  //create a new input-checkout and saving it to a variable to use later
-          type: 'checkbox' //assigning attributes
-        });
-        newToDo.prepend(checkbox); //append checkbox to the new li item
+        createNewItem(userInput);
 
-        // add elements to DOM
-        $(".item-list").append(newToDo); //append newToDo into the .item-list
-
-        $(this).val(''); // erase the userInput of the text input field (okay)
+        $('#userInput').val(''); // erase the userInput of the text input field (okay)
         
         //Goal is update div#count with text & item in list
-        var count = itemsLeft(); //create a count var to get the itemsLeft
-        var completed = itemsCompleted(); //create a var to get the itemsCompleted
-        updateStatus(count, completed); //create a updateStatus
+        updateStatus(); //create a updateStatus
         
       } //end of .keypress
   }); //end of function
@@ -93,9 +85,7 @@ $(function(){ //$(document).ready() shortcut
     } else {//else 
       $(this).siblings("span").first().removeClass("strike");//else return checkbox of span and REMOVE "strike" to the first selection
     }//end of .siblings
-    var count = itemsLeft(); //create a count var to find out the itemsLeft
-    var completed = itemsCompleted(); //create a completed var to find the itemsCompleted
-    updateStatus(count, completed);  
+    updateStatus();  
   });//end of this.checked
 
   $("#saveButton").on("click", function() { //create a #saveButton onclick function
@@ -116,7 +106,8 @@ $(function(){ //$(document).ready() shortcut
     var data = { //create a var data to store data
       list_to_save: JSON.stringify(tasksCollection) //stringify the tasksCollection to list_to_save.
     }
-    $.post("/save", data, function(data) { //post the data 
+    console.log("posting to server");
+    $.post("http://0.0.0.0:3000/save", data, function(data) { //post the data 
 
     });
   });//end of #saveButton

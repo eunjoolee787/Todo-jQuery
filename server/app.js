@@ -20,15 +20,15 @@ app.post('/save', function (req, res) {
   // res.json({status: "succcess"});
 
   // fs.writeFile("list.json");
-  function saveToDoList(content){
-  // fs = require('fs');
-    fs.writeFile('./public/todo_save.json', content, function (err) {
-      if (err) return console.log(err);
-      console.log('Successfully saved todo, save.json');
-    });
-  }
-});
 
+});
+function saveToDoList(content){
+// fs = require('fs');
+  fs.writeFile('./public/todo_save.json', content, function (err) {
+    if (err) return console.log(err);
+    console.log('Successfully saved todo_save.json');
+  });
+}
 var server = app.listen(3000, function () {
 
   var host = server.address().address;
