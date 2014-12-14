@@ -1,8 +1,10 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
 var fs = require("fs");
-var MongoClient = require('mongodb').MongoClient;
+var bodyParser = require('body-parser');
+var express = require('express');
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var ObjectID = mongodb.ObjectID;
+var app = express();
 var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
 
 app.use(express.static('public'));
@@ -55,6 +57,27 @@ app.get('/items', function (req, res) {
   });
 
 });
+
+app.delete('/items/:item_id', function (req, res) {
+  
+  connect_to_db( function ( collection ) {
+
+    var _id = req.params.item_id;
+
+    collection.remove({"_id": new ObjectID(_id)}, function (err, result) {
+      if(err) throw err;
+      //console.log("Found the following records");
+      //console.dir(docs);
+      res.json({ success: "success" });
+
+      collection.db.close();
+    });
+  
+  });
+
+});
+
+
 //install #5
 // Note the db name todosdb in the connection string
   // MongoClient.connect('mongodb://localhost:27017/todosdb', function(err, db) {
