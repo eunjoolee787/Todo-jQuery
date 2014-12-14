@@ -40,13 +40,20 @@ app.post('/item', function (req, res) {
   });//end of connect_to_db
 });//end of app.post
 
-app.get('/item', function (req, res) {
-  connect_to_db( function (collection) {
-    collection.find({}).toArray(function(err, docs) {
 
+app.get('/items', function (req, res) {
+  
+  connect_to_db( function ( collection ) {
+
+    collection.find({}).toArray(function(err, docs) {
       
+      console.log("Found the following records");
+      console.dir(docs);
+      res.send(docs);
     });
+  
   });
+
 });
 //install #5
 // Note the db name todosdb in the connection string

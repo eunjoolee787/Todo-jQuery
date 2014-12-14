@@ -12,16 +12,15 @@
 
 $(function(){ //$(document).ready() shortcut
 //auto load the save file
-  $.get("todo_save.json",function(data) {//create a .get function to json.stringify
-    // var items_list = $.parseJSON(data);
-    console.log(data);//tester only
-    for(var i = 0; i < data.length; i++){//create a for loop to go thru the data
-      console.log(data[i]);//log the length of data
+  $.get("/items",function(todos) {//create a .get function to json.stringify
+    // var items_list = $.parseJSON(todos);
+    console.log(todos);//tester only
+    for(var i = 0; i < todos.length; i++){//create a for loop to go thru the todos
+      console.log(todos[i]);//log the length of todos
 
-      createNewItem(data[i].title, data[i].completed)
+      createNewItem(todos[i].title, todos[i].completed)
 
       // newToDo.append(span); //add the span to newToDo
-      // $(".item-list").append(newToDo); //add the newToDo to .item-list
       updateStatus(); //create a updateStatus
     }; //end of for loop
   });  //end of .get function to create a json.stringify
