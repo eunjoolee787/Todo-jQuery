@@ -71,9 +71,17 @@ $(function(){ //$(document).ready() shortcut
         $('#userInput').val(''); // erase the userInput of the text input field (okay)
         
         //Goal is update div#count with text & item in list
-        updateStatus(); //create a updateStatus
-        
+        var post_data = {
+          new_item : {
+            title : userInput,
+            completed : false
+          }
+        };
+
+      $.post('/item', post_data, function(data){ });  
+
       } //end of .keypress
+
   }); //end of function
 
 //INSTRUCTIONS-LEVEL 2
@@ -88,29 +96,29 @@ $(function(){ //$(document).ready() shortcut
     updateStatus();  
   });//end of this.checked
 
-  $("#saveButton").on("click", function() { //create a #saveButton onclick function
-    // console.log("click");
-    var tasksCollection = []; // create a taskCollection array
+  // $("#saveButton").on("click", function() { //create a #saveButton onclick function
+  //   // console.log("click");
+  //   var tasksCollection = []; // create a taskCollection array
 
-    $(".item").each(function(index, element) { //create a function that checks each .item of index, element
-        //console.log(index, element);
-        var item = {}; //create a item var to store index & elements
-        // console.log($(element).find("span").text());
-        // console.log($(element).find("span").hasClass("strike"));
-        item.title = $(element).find("span").text(); //create a title to the var item and find the elements, then find the text in the span
-        item.completed = $(element).find("span").hasClass("strike");//create a completed to the var item and find the elements, then find the span and any class of "strike" to see if true or false.
-        // console.log(item);
-        tasksCollection.push(item); //now push(add) item to var tasksCollection.
-    });
-    // console.log(tasksCollection);
-    var data = { //create a var data to store data
-      list_to_save: JSON.stringify(tasksCollection) //stringify the tasksCollection to list_to_save.
-    }
-    console.log("posting to server");
-    $.post("http://0.0.0.0:3000/save", data, function(data) { //post the data 
+  //   $(".item").each(function(index, element) { //create a function that checks each .item of index, element
+  //       //console.log(index, element);
+  //       var item = {}; //create a item var to store index & elements
+  //       // console.log($(element).find("span").text());
+  //       // console.log($(element).find("span").hasClass("strike"));
+  //       item.title = $(element).find("span").text(); //create a title to the var item and find the elements, then find the text in the span
+  //       item.completed = $(element).find("span").hasClass("strike");//create a completed to the var item and find the elements, then find the span and any class of "strike" to see if true or false.
+  //       // console.log(item);
+  //       tasksCollection.push(item); //now push(add) item to var tasksCollection.
+  //   });
+  //   // console.log(tasksCollection);
+  //   var data = { //create a var data to store data
+  //     list_to_save: JSON.stringify(tasksCollection) //stringify the tasksCollection to list_to_save.
+  //   }
+  //   console.log("posting to server");
+  //   $.post("http://0.0.0.0:3000/save", data, function(data) { //post the data 
 
-    });
-  });//end of #saveButton
+  //   });
+  // });//end of #saveButton
 
 
   // $("button#save").click(function (e) {

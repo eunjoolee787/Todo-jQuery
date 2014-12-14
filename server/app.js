@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var fs = require("fs");
+var MongoClient = require('mongodb').MongoClient;
+var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -10,18 +12,86 @@ app.use(bodyParser.urlencoded({ extended: true}));
 //   res.send('Hello World!')
 //   res.rend('index');
 // })
+function connect_to_db ( cb ) {
+  MongoClient.connect(CONNECTION_STRING, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    var collection = db.collection('todos');
 
-app.post('/save', function (req, res) {
- 
-  console.log('user sent post request');
-  // console.log(req.body);
-  saveToDoList(req.body.list_to_save);
-  res.send("puppies");
-  // res.json({status: "succcess"});
+    cb(collection);
 
-  // fs.writeFile("list.json");
+  });
+}
 
+
+app.post('/item', function (req, res) {
+
+  connect_to_db(function (collection) {
+
+    var new_todo_item_to_be_inserted = req.body.new_item;
+
+    collection.insert(new_todo_item_to_be_inserted, function (err, obj) {
+      
+      console.log('err',err);
+      console.log('obj',obj);
+      res.send(obj);
+    });//end of collection.insert
+  });//end of connect_to_db
+});//end of app.post
+
+app.get('/item', function (req, res) {
+  connect_to_db( function (collection) {
+    collection.find({}).toArray(function(err, docs) {
+
+      
+    });
+  });
 });
+//install #5
+// Note the db name todosdb in the connection string
+  // MongoClient.connect('mongodb://localhost:27017/todosdb', function(err, db) {
+  //     if (err) {
+  //       throw err;
+  //     }
+
+  //   // Find the collection todos (or create it if it doesn't already exist)
+  //   var collection = db.collection('todos');
+
+    // Insert a document into the collection
+    // collection.insert({
+    //   index: 1,
+    //   title: "Connect to MongoDB server",
+    //   completed: true
+    // }, function(err, arrayItem) {
+      // Show the item that was just inserted; contains the _id field
+      // Note that it is an array containing a single object
+  //     console.log(arrayItem);
+
+  //     // Log the number of items in the collection
+  //     collection.count(function(err, count) {
+  //       console.log("count = " + count);
+  //     });
+
+  //     // Locate all the entries using find
+  //     collection.find().toArray(function(err, results) {
+  //       console.log(results);
+
+  //       // Close the db connection
+  //       db.close();
+  //     });
+  //   }); // End of function(err, docs) callback
+  // });
+   
+  // console.log('user sent post request');
+  // // console.log(req.body);
+  // saveToDoList(req.body.list_to_save);
+  // res.send("puppies");
+  // // res.json({status: "succcess"});
+
+  // // fs.writeFile("list.json");
+
+
 function saveToDoList(content){
 // fs = require('fs');
   fs.writeFile('./public/todo_save.json', content, function (err) {
