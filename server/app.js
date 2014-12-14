@@ -58,6 +58,42 @@ app.get('/items', function (req, res) {
 
 });
 
+/*
+  UPDATE completed status
+  PUT /items/:id/:status
+ */
+app.put('/items/:id/:status',function (req, res) {
+  
+  connect_to_db( function ( db, collection ) {
+    var todo_id = req.params.id;
+    var todo_completed_status = req.params.status;
+
+    // collection.update(criteria, objNew, options, [callback]);
+    collection.update(
+      { '_id' : new ObjectID(todo_id) },    // criteria
+      {
+        $set: {
+          completed : todo_completed_status
+        }
+      },                                    // objNew
+      {w:1},                                // options
+      function(err) {                       // callback
+        var success;
+        if (err){
+          success = false;
+          console.warn(err.message);
+        }else{
+          success = true;
+          console.log('successfully updated');
+        }
+
+        db.close();
+        res.json( { success : success } );
+      }
+    );
+  });
+
+});
 app.delete('/items/:item_id', function (req, res) {
   
   connect_to_db( function ( collection ) {
