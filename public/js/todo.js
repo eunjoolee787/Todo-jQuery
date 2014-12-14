@@ -79,6 +79,8 @@ $(function(){ //$(document).ready() shortcut
         }
       });
 
+
+    newToDo.append(list_delete);
     // add elements to DOM
     $(".item-list").append(newToDo); //append newToDo into the .item-list
   }//end of createNewItem
