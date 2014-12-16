@@ -42,7 +42,7 @@ $(function(){ //$(document).ready() shortcut
   }
 
   function createNewItem (objectId, userInput, isChecked) {
-    console.log(objectId);
+    // console.log(objectId);
     var newToDo = $('<li>'); //create a new li element with jquery
     newToDo.addClass("item"); //adding a class to the new li item
     
@@ -58,7 +58,7 @@ $(function(){ //$(document).ready() shortcut
     if(isChecked){ //if data loop's is completed
         span.addClass("strike"); //add the .strike to span
         checkbox.prop("checked", true);
-      }
+    }
     newToDo.prepend(checkbox); //append checkbox to the new li item
 
 
@@ -66,12 +66,14 @@ $(function(){ //$(document).ready() shortcut
             text: "[delete]",
             click: function (e) {
               var button = $(e.currentTarget);
-              var object_id = button.closet("li").data("object_id");
+              var parent_li = button.closest("li");
+              var object_id = parent_li.data("object_id");
 
           $.ajax('/items/' + object_id, 
             {
               type: "DELETE",
               success: function (data) {
+                parent_li.remove();
                 console.log('data', data);
               }
             }
@@ -90,7 +92,7 @@ $(function(){ //$(document).ready() shortcut
         //alert('You pressed enter!'); //  //TESTER ONLY!
         var userInput = $("#userInput").val(); //create var of when user inputs data
 
-        createNewItem(null, userInput, false);
+
 
         $('#userInput').val(''); // erase the userInput of the text input field (okay)
         
@@ -102,7 +104,9 @@ $(function(){ //$(document).ready() shortcut
           }
         };
 
-      $.post('/item', post_data, function(data){ });  
+      $.post('/items', post_data, function(data){ 
+        createNewItem(data, userInput, false);
+      });  
 
       } //end of .keypress
 
@@ -119,6 +123,7 @@ $(function(){ //$(document).ready() shortcut
     }//end of .siblings
     updateStatus();  
   });//end of this.checked
+
 
   // $("#saveButton").on("click", function() { //create a #saveButton onclick function
   //   // console.log("click");

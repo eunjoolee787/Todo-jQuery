@@ -1,4 +1,4 @@
-var fs = require("fs");
+var fs = require("fs");//Should I delete?
 var bodyParser = require('body-parser');
 var express = require('express');
 var mongodb = require('mongodb');
@@ -21,42 +21,31 @@ function connect_to_db ( cb ) {
     }
     var collection = db.collection('todos');
 
-    cb(collection);
+    cb(db, collection);
 
   });
 }
 
 
-app.post('/item', function (req, res) {
+app.post('/items', function (req, res) {
 
-  connect_to_db(function (collection) {
+  connect_to_db(function (db, collection) {
 
     var new_todo_item_to_be_inserted = req.body.new_item;
 
-    collection.insert(new_todo_item_to_be_inserted, function (err, obj) {
+    collection.insert(new_todo_item_to_be_inserted, function (err, docs) {
       
-      console.log('err',err);
-      console.log('obj',obj);
-      res.send(obj);
+      // console.log('err',err);
+      // console.log('obj',obj);
+      //res.send(obj);
+      db.close();
+      res.send(docs[0]._id);
     });//end of collection.insert
   });//end of connect_to_db
 });//end of app.post
 
 
-app.get('/items', function (req, res) {
-  
-  connect_to_db( function ( collection ) {
 
-    collection.find({}).toArray(function(err, docs) {
-      
-      console.log("Found the following records");
-      console.dir(docs);
-      res.send(docs);
-    });
-  
-  });
-
-});
 
 /*
   UPDATE completed status
@@ -94,19 +83,20 @@ app.put('/items/:id/:status',function (req, res) {
   });
 
 });
-app.delete('/items/:item_id', function (req, res) {
+app.delete('/items/:id', function (req, res) {
   
-  connect_to_db( function ( collection ) {
+  connect_to_db( function ( db, collection ) {
 
-    var _id = req.params.item_id;
+    var _id = req.params.id;
 
     collection.remove({"_id": new ObjectID(_id)}, function (err, result) {
       if(err) throw err;
       //console.log("Found the following records");
       //console.dir(docs);
+      db.close();
       res.json({ success: "success" });
 
-      collection.db.close();
+      //collection.db.close();
     });
   
   });
@@ -158,13 +148,13 @@ app.delete('/items/:item_id', function (req, res) {
   // // fs.writeFile("list.json");
 
 
-function saveToDoList(content){
-// fs = require('fs');
-  fs.writeFile('./public/todo_save.json', content, function (err) {
-    if (err) return console.log(err);
-    console.log('Successfully saved todo_save.json');
-  });
-}
+// function saveToDoList(content){
+// // fs = require('fs');
+//   fs.writeFile('./public/todo_save.json', content, function (err) {
+//     if (err) return console.log(err);
+//     console.log('Successfully saved todo_save.json');
+//   });
+// }
 var server = app.listen(3000, function () {
 
   var host = server.address().address;
