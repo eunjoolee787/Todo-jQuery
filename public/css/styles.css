@@ -1,5 +1,16 @@
+body {
+  background-color: gray;
+}
+
 h1{
-  background-color: red;
+  background-color: yellow;
+  font-size: 50px;
+  text-align: center;
+}
+
+input #userInput {
+  background-color: blue;
+  margin: 225px;
 }
 
 span.strike{
