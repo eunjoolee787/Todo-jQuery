@@ -8,9 +8,8 @@ h1{
   text-align: center;
 }
 
-input #userInput {
+input{
   background-color: blue;
-  margin: 225px;
 }
 
 span.strike{
