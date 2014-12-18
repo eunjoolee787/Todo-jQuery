@@ -7,7 +7,7 @@ var app = express();
 var mongoose = require('mongoose');
 
 //var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
-var CONNECTION_STRING = 'mongodb//root:' + process.env.DBPASS + 
+var CONNECTION_STRING = 'mongodb//root:' + process.env.DBPASS + 'ds012345.mongolab.com/todosdb';
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
