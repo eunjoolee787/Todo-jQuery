@@ -1,4 +1,3 @@
-var fs = require("fs");//Should I delete?
 var bodyParser = require('body-parser');
 var express = require('express');
 var mongodb = require('mongodb');
@@ -10,10 +9,20 @@ var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
-// app.get('/', function (req, res) {
-//   res.send('Hello World!')
-//   res.rend('index');
-// })
+app.get('/items', function (req, res) {
+
+  connect_to_db (function (db, collection) {
+
+    collection.find({}).toArray(function (err, docs) {
+      db.close();
+
+      if(err) throw err;
+      console.log('docs', docs);
+      res.send(docs)
+    });//end of collection.find
+  });//end of connect_to_db
+});//end of app.get
+
 function connect_to_db ( cb ) {
   MongoClient.connect(CONNECTION_STRING, function(err, db) {
     if (err) {
@@ -23,8 +32,8 @@ function connect_to_db ( cb ) {
 
     cb(db, collection);
 
-  });
-}
+  });//end of MongoClient.connect
+}//end of connect_to_db
 
 
 app.post('/items', function (req, res) {
@@ -78,11 +87,11 @@ app.put('/items/:id/:status',function (req, res) {
 
         db.close();
         res.json( { success : success } );
-      }
-    );
-  });
+      }//end of function(err)
+    );//end of collection.update
+  });//end of connect_to_db
+});//end of app.put
 
-});
 app.delete('/items/:id', function (req, res) {
   
   connect_to_db( function ( db, collection ) {
@@ -91,17 +100,11 @@ app.delete('/items/:id', function (req, res) {
 
     collection.remove({"_id": new ObjectID(_id)}, function (err, result) {
       if(err) throw err;
-      //console.log("Found the following records");
-      //console.dir(docs);
       db.close();
       res.json({ success: "success" });
-
-      //collection.db.close();
-    });
-  
-  });
-
-});
+    });//end of collection.remove  
+  });//end of connect_to_db
+});//end of app.delete
 
 
 //install #5
@@ -161,7 +164,7 @@ var server = app.listen(3000, function () {
   var port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
 
-});
+});//end of app.listen
 
 
 

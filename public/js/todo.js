@@ -14,13 +14,9 @@ $(function(){ //$(document).ready() shortcut
 //auto load the save file
   $.get("/items",function(todos) {//create a .get function to json.stringify
     // var items_list = $.parseJSON(todos);
-    console.log(todos);//tester only
     for(var i = 0; i < todos.length; i++){//create a for loop to go thru the todos
-      console.log(todos[i]);//log the length of todos
-
+     
       createNewItem(todos[i]._id,todos[i].title, todos[i].completed)
-
-
 
       // newToDo.append(span); //add the span to newToDo
       updateStatus(); //create a updateStatus
@@ -54,45 +50,42 @@ $(function(){ //$(document).ready() shortcut
 
     var checkbox = $('<input>', {  //create a new input-checkout and saving it to a variable to use later
       type: 'checkbox' //assigning attributes
-    });
+    });//end of checkbox
     if(isChecked){ //if data loop's is completed
         span.addClass("strike"); //add the .strike to span
         checkbox.prop("checked", true);
-    }
+    }//end of if(isChecked)
     newToDo.prepend(checkbox); //append checkbox to the new li item
 
+    var list_delete = $('<button>', {
+      text: "[delete]",
+      click: function (e) {
+        var button = $(e.currentTarget);
+        var parent_li = button.closest("li");
+        var object_id = parent_li.data("object_id");
 
-          var list_delete = $('<button>', {
-            text: "[delete]",
-            click: function (e) {
-              var button = $(e.currentTarget);
-              var parent_li = button.closest("li");
-              var object_id = parent_li.data("object_id");
-
-          $.ajax('/items/' + object_id, 
-            {
-              type: "DELETE",
-              success: function (data) {
-                parent_li.remove();
-                console.log('data', data);
-              }
-            }
-          );
-        }
-      });
+        $.ajax('/items/' + object_id, 
+          {
+            type: "DELETE",
+            success: function (data) {
+              parent_li.remove();
+              console.log('data', data);
+            }//end of success function data
+          }//beginning of .ajax
+        );//items + object_id
+      }//end of list_delete
+    });//end of list_delete
 
 
-    newToDo.append(list_delete);
-    // add elements to DOM
-    $(".item-list").append(newToDo); //append newToDo into the .item-list
-  }//end of createNewItem
+      newToDo.append(list_delete);
+      // add elements to DOM
+      $(".item-list").append(newToDo); //append newToDo into the .item-list
+    }//end of createNewItem
 
   $("#userInput").keypress(function(event){ //add an eventlistener on the text input field that listens for the [enter] key to be pressed. (okay)
       if(event.which == 13){ //when this event triggers (okay)
         //alert('You pressed enter!'); //  //TESTER ONLY!
         var userInput = $("#userInput").val(); //create var of when user inputs data
-
-
 
         $('#userInput').val(''); // erase the userInput of the text input field (okay)
         
@@ -101,15 +94,13 @@ $(function(){ //$(document).ready() shortcut
           new_item : {
             title : userInput,
             completed : false
-          }
-        };
+          }//end of post_data
+        };//end of if(event.which==13)
 
-      $.post('/items', post_data, function(data){ 
-        createNewItem(data, userInput, false);
-      });  
-
-      } //end of .keypress
-
+        $.post('/items', post_data, function(data){ 
+          createNewItem(data, userInput, false);
+        });//end of .post  
+      } //end of it(event.which==13)
   }); //end of function
 
 //INSTRUCTIONS-LEVEL 2
@@ -171,7 +162,7 @@ $(function(){ //$(document).ready() shortcut
   // });
   // });
 
-  });//end of function
+});//end of function
 
 // notes-understand document.ready
 // $(document).ready(function(){
