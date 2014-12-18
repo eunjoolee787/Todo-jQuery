@@ -1,27 +1,47 @@
 var bodyParser = require('body-parser');
 var express = require('express');
-var mongodb = require('mongodb');
-var MongoClient = mongodb.MongoClient;
+// var mongodb = require('mongodb');
+// var MongoClient = mongodb.MongoClient;
 var ObjectID = mongodb.ObjectID;
 var app = express();
-var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
+var mongoose = require('mongoose');
 
+//var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
+var CONNECTION_STRING = 'mongodb//root:' + process.env.DBPASS + 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
+mongoose.connect(CONNECTION_STRING);
+
+//var Model = mongoose.model('Model');
+
+var todoSchema = mongoose.Schema({
+  title: String,
+  cmpleted: Boolean
+});
+
+var Todo = mongoose.model('TodoItem', todoSchema);
+
 app.get('/items', function (req, res) {
+  Todo.find(function(err,todos) {
+    if(err) {
+      else {
+        res.send(todos)
+    }
+  });
+  Todo.find(callback);
 
-  connect_to_db (function (db, collection) {
+//   connect_to_db (function (db, collection) {
 
-    collection.find({}).toArray(function (err, docs) {
-      db.close();
+//     collection.find({}).toArray(function (err, docs) {
+//       db.close();
 
-      if(err) throw err;
-      console.log('docs', docs);
-      res.send(docs)
-    });//end of collection.find
-  });//end of connect_to_db
-});//end of app.get
+//       if(err) throw err;
+//       console.log('docs', docs);
+//       res.send(docs)
+//     });//end of collection.find
+//   });//end of connect_to_db
+// });//end of app.get
 
 function connect_to_db ( cb ) {
   MongoClient.connect(CONNECTION_STRING, function(err, db) {
@@ -37,21 +57,30 @@ function connect_to_db ( cb ) {
 
 
 app.post('/items', function (req, res) {
+  var todo = new Tod(req.body.new_item);
 
-  connect_to_db(function (db, collection) {
+  todo.save(function(err) {
+    if (err) {
+      throw err;
+    } else {
+      res.send(todo._id);
+    }
+  });
 
-    var new_todo_item_to_be_inserted = req.body.new_item;
+//   connect_to_db(function (db, collection) {
 
-    collection.insert(new_todo_item_to_be_inserted, function (err, docs) {
+//     var new_todo_item_to_be_inserted = req.body.new_item;
+
+//     collection.insert(new_todo_item_to_be_inserted, function (err, docs) {
       
-      // console.log('err',err);
-      // console.log('obj',obj);
-      //res.send(obj);
-      db.close();
-      res.send(docs[0]._id);
-    });//end of collection.insert
-  });//end of connect_to_db
-});//end of app.post
+//       // console.log('err',err);
+//       // console.log('obj',obj);
+//       //res.send(obj);
+//       db.close();
+//       res.send(docs[0]._id);
+//     });//end of collection.insert
+//   });//end of connect_to_db
+// });//end of app.post
 
 
 
@@ -60,51 +89,79 @@ app.post('/items', function (req, res) {
   UPDATE completed status
   PUT /items/:id/:status
  */
-app.put('/items/:id/:status',function (req, res) {
+app.put('/items',function (req, res) {
+
+  // update(queryingFor, whatYouWantToChange, callback)
+  Todo.update({
+    "_id": new ObjectID(req.body._id)
+  }, {
+    "completed": req.body.completed
+  }, function(err) {
+    if(err) {
+      throw err;
+    }
+    else {
+      res.send("Todo item was successfully update");
+    }
+  }
+
+
   
-  connect_to_db( function ( db, collection ) {
-    var todo_id = req.params.id;
-    var todo_completed_status = req.params.status;
+//   connect_to_db( function ( db, collection ) {
+//     var todo_id = req.params.id;
+//     var todo_completed_status = req.params.status;
 
-    // collection.update(criteria, objNew, options, [callback]);
-    collection.update(
-      { '_id' : new ObjectID(todo_id) },    // criteria
-      {
-        $set: {
-          completed : todo_completed_status
-        }
-      },                                    // objNew
-      {w:1},                                // options
-      function(err) {                       // callback
-        var success;
-        if (err){
-          success = false;
-          console.warn(err.message);
-        }else{
-          success = true;
-          console.log('successfully updated');
-        }
+//     // collection.update(criteria, objNew, options, [callback]);
+//     collection.update(
+//       { '_id' : new ObjectID(todo_id) },    // criteria
+//       {
+//         $set: {
+//           completed : todo_completed_status
+//         }
+//       },                                    // objNew
+//       {w:1},                                // options
+//       function(err) {                       // callback
+//         var success;
+//         if (err){
+//           success = false;
+//           console.warn(err.message);
+//         }else{
+//           success = true;
+//           console.log('successfully updated');
+//         }
 
-        db.close();
-        res.json( { success : success } );
-      }//end of function(err)
-    );//end of collection.update
-  });//end of connect_to_db
-});//end of app.put
+//         db.close();
+//         res.json( { success : success } );
+//       }//end of function(err)
+//     );//end of collection.update
+//   });//end of connect_to_db
+// });//end of app.put
+
 
 app.delete('/items/:id', function (req, res) {
-  
-  connect_to_db( function ( db, collection ) {
+//remove(whatYouWantQueryingFor, callback)
 
-    var _id = req.params.id;
+Todo.remove({
+  "_id": req.params.item_id
+ }, function(err) {
+    if(err) {
+      throw err;
+    }
+    else {
+      res.send("Todo item was successfully update");
+    }
+  }
+//   connect_to_db( function ( db, collection ) {
 
-    collection.remove({"_id": new ObjectID(_id)}, function (err, result) {
-      if(err) throw err;
-      db.close();
-      res.json({ success: "success" });
-    });//end of collection.remove  
-  });//end of connect_to_db
-});//end of app.delete
+//     var _id = req.params.id;
+
+//     collection.remove({"_id": new ObjectID(_id)}, function (err, result) {
+//       if(err) throw err;
+//       db.close();
+//       res.json({ success: "success" });
+//     });//end of collection.remove  
+//   });//end of connect_to_db
+// });//end of app.delete
 
 
 //install #5
