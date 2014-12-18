@@ -1,35 +1,41 @@
-var bodyParser = require('body-parser');
 var express = require('express');
-// var mongodb = require('mongodb');
-// var MongoClient = mongodb.MongoClient;
-var ObjectID = mongodb.ObjectID;
 var app = express();
+var bodyParser = require('body-parser');
+var fs = require ('fs');
+// var mongodb = require('mongodb');
+var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var mongoose = require('mongoose');
 
 //var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
-var CONNECTION_STRING = 'mongodb//root:' + process.env.DBPASS + 'ds012345.mongolab.com/todosdb';
+var CONNECTION_STRING = 'mongodb://root:' + process.env.DBPASS + '@ds063870.mongolab.com:63870/todos';
+
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
 mongoose.connect(CONNECTION_STRING);
 
+var Todo = mongoose.model('Todo', { title: String, completed: String });
+
 //var Model = mongoose.model('Model');
 
-var todoSchema = mongoose.Schema({
-  title: String,
-  cmpleted: Boolean
-});
+// var todoSchema = mongoose.Schema({
+//   title: String,
+//   cmpleted: Boolean
+// });
 
-var Todo = mongoose.model('TodoItem', todoSchema);
+// var Todo = mongoose.model('TodoItem', todoSchema);
 
 app.get('/items', function (req, res) {
   Todo.find(function(err,todos) {
     if(err) {
+      throw err;
+      } 
       else {
-        res.send(todos)
+      res.send(todos);
     }
   });
-  Todo.find(callback);
+  //Todo.find(callback);
 
 //   connect_to_db (function (db, collection) {
 
@@ -41,23 +47,23 @@ app.get('/items', function (req, res) {
 //       res.send(docs)
 //     });//end of collection.find
 //   });//end of connect_to_db
-// });//end of app.get
+});//end of app.get
 
-function connect_to_db ( cb ) {
-  MongoClient.connect(CONNECTION_STRING, function(err, db) {
-    if (err) {
-      throw err;
-    }
-    var collection = db.collection('todos');
+// function connect_to_db ( cb ) {
+//   MongoClient.connect(CONNECTION_STRING, function(err, db) {
+//     if (err) {
+//       throw err;
+//     }
+//     var collection = db.collection('todos');
 
-    cb(db, collection);
+//     cb(db, collection);
 
-  });//end of MongoClient.connect
-}//end of connect_to_db
+//   });//end of MongoClient.connect
+// }//end of connect_to_db
 
 
 app.post('/items', function (req, res) {
-  var todo = new Tod(req.body.new_item);
+  var todo = new Todo(req.body.new_item);
 
   todo.save(function(err) {
     if (err) {
@@ -80,7 +86,7 @@ app.post('/items', function (req, res) {
 //       res.send(docs[0]._id);
 //     });//end of collection.insert
 //   });//end of connect_to_db
-// });//end of app.post
+});//end of app.post
 
 
 
@@ -103,7 +109,7 @@ app.put('/items',function (req, res) {
     else {
       res.send("Todo item was successfully update");
     }
-  }
+  });
 
 
   
@@ -138,7 +144,7 @@ app.put('/items',function (req, res) {
 // });//end of app.put
 
 
-app.delete('/items/:id', function (req, res) {
+app.delete('/items/:item_id', function (req, res) {
 //remove(whatYouWantQueryingFor, callback)
 
 Todo.remove({
@@ -148,9 +154,9 @@ Todo.remove({
       throw err;
     }
     else {
-      res.send("Todo item was successfully update");
+      res.send("Todo item was successfully deleted");
     }
-  }
+  })
 //   connect_to_db( function ( db, collection ) {
 
 //     var _id = req.params.id;
@@ -161,7 +167,7 @@ Todo.remove({
 //       res.json({ success: "success" });
 //     });//end of collection.remove  
 //   });//end of connect_to_db
-// });//end of app.delete
+});//end of app.delete
 
 
 //install #5
@@ -216,11 +222,10 @@ Todo.remove({
 //   });
 // }
 var server = app.listen(3000, function () {
-
   var host = server.address().address;
   var port = server.address().port;
+  
   console.log('Example app listening at http://%s:%s', host, port);
-
 });//end of app.listen
 
 
