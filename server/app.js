@@ -153,7 +153,7 @@ Todo.remove({
     else {
       res.send("Todo item was successfully deleted");
     }
-  })
+  });
 //   connect_to_db( function ( db, collection ) {
 
 //     var _id = req.params.id;
