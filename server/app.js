@@ -8,7 +8,7 @@ var ObjectID = require('mongodb').ObjectID;
 var mongoose = require('mongoose');
 
 //var CONNECTION_STRING = 'mongodb://localhost:27017/todosdb';
-var CONNECTION_STRING = 'mongodb://root:' + process.env.DBPASS + '@ds063870.mongolab.com:63870/todos';
+var CONNECTION_STRING = 'mongodb://todoapp:password@ds027751.mongolab.com:27751/todo';
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -99,7 +99,7 @@ app.put('/items',function (req, res) {
 
   // update(queryingFor, whatYouWantToChange, callback)
   Todo.update({
-    "_id": new ObjectID(req.body._id)
+     "_id":   new ObjectID(req.body._id)
   }, {
     "completed": req.body.completed
   }, function(err) {
@@ -109,10 +109,7 @@ app.put('/items',function (req, res) {
     else {
       res.send("Todo item was successfully update");
     }
-  });
-
-
-  
+  }); 
 //   connect_to_db( function ( db, collection ) {
 //     var todo_id = req.params.id;
 //     var todo_completed_status = req.params.status;
@@ -141,7 +138,7 @@ app.put('/items',function (req, res) {
 //       }//end of function(err)
 //     );//end of collection.update
 //   });//end of connect_to_db
-// });//end of app.put
+});//end of app.put
 
 
 app.delete('/items/:item_id', function (req, res) {
