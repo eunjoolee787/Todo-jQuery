@@ -16,11 +16,11 @@ $(function(){ //$(document).ready() shortcut
     // var items_list = $.parseJSON(todos);
     for(var i = 0; i < todos.length; i++){//create a for loop to go thru the todos
      
-      createNewItem(todos[i]._id,todos[i].title, todos[i].completed)
+      createNewItem(todos[i]._id,todos[i].title, todos[i].completed);
 
       // newToDo.append(span); //add the span to newToDo
       updateStatus(); //create a updateStatus
-    }; //end of for loop
+    } //end of for loop
   });  //end of .get function to create a json.stringify
 
 //Add working counter that shows how many item the user has left to do.  
