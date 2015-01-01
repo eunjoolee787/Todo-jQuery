@@ -9,12 +9,23 @@
 <body>
   <h1>todos</h1>
   <input id="userInput" type="text" value="">
-    <ul id="tasks">
-      <li class="input">Finish</li>
-      <li class="input">Level 2</li>
-      <li class="input">Level 3</li>
-      <li class="input">Fork Te's</li>
+    <ul id="tasksList">
+      <li class="todos">
+        <input class="checkBox" type="checkbox">&nbsp;Finish
+      </li>
+      <li class="todos">
+        <input class="checkBox" type="checkbox">&nbsp;Level 2</li>
+      <li class="todos">
+        <input class="checkBox" type="checkbox">&nbsp;Level 3</li>
+      <li class="todos">
+        <input class="checkBox" type="checkbox">&nbsp;Fork Te's</li>
     </ul>
+    <div class="status">
+      <p>
+        <span class="itemLeft">0</span>&nbsp;items left
+        <span class="itemCompleted">0</span>&nbsp;items completed
+      </p>
+    </div>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="/js/todo.js"></script>    
 </body>
