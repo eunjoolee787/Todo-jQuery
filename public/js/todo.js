@@ -6,49 +6,87 @@
 - ALL OF ABOVE ONLY HAPPENS WHEN INPUT FIELD IS IN FOCUS
  */
 
-$(function () {
+$(function() {
 
+  //keypress function
   $("#userInput").keypress(function(event) {
     if(event.which == 13) {
       var userInput = $("#userInput").val();
       var newLiElement = $("<li>");
+    }
+    newLiElement.addClass("tasks");
+    newLiElement.text("" + userInput);
+
+    var newCheckBox = $("<input>");
+    newCheckBox.attr("type", "checkbox");
+    newCheckBox.addClass("checkbox");
+
+    newLiElement.prepend(newCheckBox);
+
+    $("#taskList").append(newLiElement);
+    $(this).val();
+  });
+    //if event
+    
+      //var userInput jquery
+      //var new Li element
+     
+
+      //add new class   
+      //add text to #userInput
       
-      newLiElement.addClass("todos");
-      newLiElement.text("  " + userInput);
 
-      var newCheckBox = $("<input>");
-      newCheckBox.attr('type', 'checkbox');
-      newCheckBox.addClass("checkBox");
+      //create var input      
+      //create attr     
+      //add Class     
 
-      newLiElement.prepend(newCheckBox);
+      //prepend  
 
-      $("#tasksList").append(newLiElement);
-      $(this).val("");
-    }
-    updateCounter();
-  });
-
-  $(".checkBox").click(function(event) {
-    if(this.checked) {
-      $(this).parent().addClass("strike");
-    } else {
-      $(this).parent().removeClass("strike");
-    }
-    updateCounter();
-  });
-
-  function updateCounter() {
-    var itemTotal = $(".todos").length;
-    var itemCompleted = $(".strike").length;
-    var itemLeft = itemTotal - itemCompleted;
-
-    $(".itemLeft").text(itemLeft);
-    $(".itemCompleted").text(itemCompleted);
+      //append newLiElement
+      //erase .val
+   
+$(".checkBox").click(function(event) {
+  if(this.checked) {
+    $(this).parent().addClass("strike");
+  } else {
+    $(this).parent().removeClass("strike");
   }
   updateCounter();
+});
+
+  //create click function
+  
+  //create if checked
+    
+  //if add class parent
+     
+  //else remove class parent
+   
+
+
+  //function updateCounter
+function updateCounter() {
+  var itemTotal = $(".tasks").length;
+  var itemCompleted = $(".strike").length;
+  var itemLeft = itemTotal - itemCompleted;
+
+  $(".itemLeft").text(itemLeft);
+  $(".itemCompleted").text(itemCompleted);
+}
+updateCounter();
+  //create var itemTotal
+
+  //create var itemCompleted
+
+  //create var itemLeft
+
+  //create jquery text itemLeft
+
+  //create jquery text itemCompleted
+
+//updateCounter
 
 });//end of doc ready
-
 
 
 
