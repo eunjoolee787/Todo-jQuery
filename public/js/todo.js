@@ -10,21 +10,21 @@ $(function() {
 
   //keypress function
   $("#userInput").keypress(function(event) {
-    if(event.which == 13) {
+    if(event.which === 13) {
       var userInput = $("#userInput").val();
       var newLiElement = $("<li>");
+      newLiElement.addClass("tasks");
+      newLiElement.text("" + userInput);
+
+      var newCheckBox = $("<input>");
+      newCheckBox.attr("type", "checkbox");
+      newCheckBox.addClass("checkBox");
+
+      newLiElement.prepend(newCheckBox);
+
+      $("#taskList").append(newLiElement);
+      $(this).val();
     }
-    newLiElement.addClass("tasks");
-    newLiElement.text("" + userInput);
-
-    var newCheckBox = $("<input>");
-    newCheckBox.attr("type", "checkbox");
-    newCheckBox.addClass("checkbox");
-
-    newLiElement.prepend(newCheckBox);
-
-    $("#taskList").append(newLiElement);
-    $(this).val();
   });
     //if event
     
@@ -45,7 +45,7 @@ $(function() {
       //append newLiElement
       //erase .val
    
-$(".checkBox").click(function(event) {
+$("body").on("click", ".checkBox", function() {
   if(this.checked) {
     $(this).parent().addClass("strike");
   } else {
