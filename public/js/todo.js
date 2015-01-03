@@ -61,8 +61,22 @@ $("body").on("click", ".checkBox", function() {
   //if add class parent
      
   //else remove class parent
-   
+  
+  $("#save").click(function(event) {
+    var taskListItems = $("ul#taskList li"); //array of <li> items
+    var dataStorage = [];
 
+    for(var i = 0; i < taskListItems.length; i++) {
+      var item = $(taskListItems[i]);
+
+      var taskObject = {
+        "title": item.text().trim(),
+        "completed": item.find("input:checkbox").prop("checked")
+      };
+      dataStorage.push(taskObject);
+    } 
+    console.log(dataStorage);
+  });
 
   //function updateCounter
 function updateCounter() {
@@ -74,6 +88,7 @@ function updateCounter() {
   $(".itemCompleted").text(itemCompleted);
 }
 updateCounter();
+
   //create var itemTotal
 
   //create var itemCompleted
