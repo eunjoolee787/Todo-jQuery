@@ -14,7 +14,7 @@ $(function() {
       var userInput = $("#userInput").val();
       var newLiElement = $("<li>");
       newLiElement.addClass("tasks");
-      newLiElement.text("" + userInput);
+      newLiElement.text(userInput);
 
       var newCheckBox = $("<input>");
       newCheckBox.attr("type", "checkbox");
@@ -23,7 +23,8 @@ $(function() {
       newLiElement.prepend(newCheckBox);
 
       $("#taskList").append(newLiElement);
-      $(this).val();
+      $(this).val("");
+      updateCounter();
     }
   });
     //if event
@@ -62,21 +63,53 @@ $("body").on("click", ".checkBox", function() {
      
   //else remove class parent
   
-  $("#save").click(function(event) {
-    var taskListItems = $("ul#taskList li"); //array of <li> items
-    var dataStorage = [];
+  // $("#save").click(function(event) {
+  //   var taskListItems = $("ul#taskList li"); //array of <li> items
+  //   var dataStorage = [];
 
-    for(var i = 0; i < taskListItems.length; i++) {
-      var item = $(taskListItems[i]);
+  //   for(var i = 0; i < taskListItems.length; i++) {
+  //     var item = $(taskListItems[i]);
 
-      var taskObject = {
-        "title": item.text().trim(),
-        "completed": item.find("input:checkbox").prop("checked")
-      };
-      dataStorage.push(taskObject);
-    } 
-    console.log(dataStorage);
-  });
+  //     var taskObject = {
+  //       "title": item.text().trim(),
+  //       "completed": item.find("input:checkbox").prop("checked")
+  //     };
+  //     dataStorage.push(taskObject);
+  //   } 
+  //   console.log(dataStorage);
+  // });
+
+$("#save").click(function(event) {
+  var tasksArray = $("li.tasks");
+  var dataStorage = [];
+
+  for(var i = 0; i < tasksArray.length; i++) {
+    var taskObject = {
+      title: $(tasksArray[i]).text().trim(),
+      completed: $(tasksArray[i]).find(".checkBox").prop("checked")
+    };
+    // console.log(taskObject);
+    //this is the task TITLE
+    // emptyObject.title = $(tasksArray[i]).text();
+
+    // //this is the COMPLETED value
+    // emptyObject.completed = $(tasksArray[i]).find(".checkBox").prop("checked");
+    dataStorage.push(taskObject);
+  }
+  console.log(dataStorage);
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
   //function updateCounter
 function updateCounter() {
