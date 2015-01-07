@@ -10,42 +10,39 @@ $(function() {
 
   //keypress function
   $("#userInput").keypress(function(event) {
-    if(event.which === 13) {
-      var userInput = $("#userInput").val();
-      var newLiElement = $("<li>");
-      newLiElement.addClass("tasks");
-      newLiElement.text(userInput);
-
-      var newCheckBox = $("<input>");
-      newCheckBox.attr("type", "checkbox");
-      newCheckBox.addClass("checkBox");
-
-      newLiElement.prepend(newCheckBox);
-
-      $("#taskList").append(newLiElement);
-      $(this).val("");
-      updateCounter();
-    }
-  });
     //if event
-    
-      //var userInput jquery
+    if(event.which == 13) {
+      // console.log("hi");
+
+      //var userInput jquery .val
+      var userInput = $("#userInput").val();
       //var new Li element
-     
+      var newLiElement = $("<li>");
 
       //add new class   
+      newLiElement.addClass("tasks");
       //add text to #userInput
-      
+      newLiElement.text("" + userInput);
 
-      //create var input      
+      //create var input element jquery     
+      var newCheckBox = $("<input>");
       //create attr     
+      newCheckBox.attr("type", "checkbox");
       //add Class     
-
+      newCheckBox.addClass("checkBox");
+      
+    
       //prepend  
+      newLiElement.prepend(newCheckBox);
 
       //append newLiElement
+      $("#taskList").append(newLiElement);
       //erase .val
-   
+      $(this).val();
+    }
+    updateCounter();
+  });
+
 $("body").on("click", ".checkBox", function() {
   if(this.checked) {
     $(this).parent().addClass("strike");
@@ -55,57 +52,16 @@ $("body").on("click", ".checkBox", function() {
   updateCounter();
 });
 
+
+
   //create click function
   
   //create if checked
     
   //if add class parent
-     
+   
   //else remove class parent
   
-  // $("#save").click(function(event) {
-  //   var taskListItems = $("ul#taskList li"); //array of <li> items
-  //   var dataStorage = [];
-
-  //   for(var i = 0; i < taskListItems.length; i++) {
-  //     var item = $(taskListItems[i]);
-
-  //     var taskObject = {
-  //       "title": item.text().trim(),
-  //       "completed": item.find("input:checkbox").prop("checked")
-  //     };
-  //     dataStorage.push(taskObject);
-  //   } 
-  //   console.log(dataStorage);
-  // });
-
-$("#save").click(function(event) {
-  var tasksArray = $("li.tasks");
-  var dataStorage = [];
-
-  for(var i = 0; i < tasksArray.length; i++) {
-    var taskObject = {
-      title: $(tasksArray[i]).text().trim(),
-      completed: $(tasksArray[i]).find(".checkBox").prop("checked")
-    };
-    // console.log(taskObject);
-    //this is the task TITLE
-    // emptyObject.title = $(tasksArray[i]).text();
-
-    // //this is the COMPLETED value
-    // emptyObject.completed = $(tasksArray[i]).find(".checkBox").prop("checked");
-    dataStorage.push(taskObject);
-  }
-  console.log(dataStorage);
-});
-
-
-
-
-
-
-
-
 
 
 
@@ -132,9 +88,10 @@ updateCounter();
 
   //create jquery text itemCompleted
 
-//updateCounter
+  //updateCounter
 
 });//end of doc ready
+
 
 
 
