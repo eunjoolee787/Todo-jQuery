@@ -22,12 +22,12 @@ $(function() {
       //add new class   
       newLiElement.addClass("tasks");
       //add text to #userInput
-      newLiElement.text("" + userInput);
+      newLiElement.text(userInput);
 
       //create var input element jquery     
       var newCheckBox = $("<input>");
       //create attr     
-      newCheckBox.attr("type", "checkbox");
+      newCheckBox.attr("type", "checkbox"); 
       //add Class     
       newCheckBox.addClass("checkBox");
       
@@ -40,17 +40,17 @@ $(function() {
       //erase .val
       $(this).val();
     }
+  });
+
+  $("body").on("click", ".checkBox", function() {
+    if(this.checked) {
+      $(this).parent().addClass("strike");
+    } else {
+      $(this).parent().removeClass("strike");
+    }
     updateCounter();
   });
 
-$("body").on("click", ".checkBox", function() {
-  if(this.checked) {
-    $(this).parent().addClass("strike");
-  } else {
-    $(this).parent().removeClass("strike");
-  }
-  updateCounter();
-});
 
 
 
@@ -62,9 +62,33 @@ $("body").on("click", ".checkBox", function() {
    
   //else remove class parent
   
+$("#save").click(function(event) {
+  //var array of <li> items
+  var tasksArray = $("li.tasks");
+  //var dataStorage
+  var dataStorage = [];
 
+  //for loop
+  for(var i = 0; i < tasksArray.length; i++) {
+    //var taskObject
+    var taskObject = {
+      //title: .text
+      title: $(tasksArray[i]).text().trim(),
+      //completed: .find  .prop
+      completed: $(tasksArray[i]).find(".checkBox").prop("checked")
+    };
+    //.push
+    dataStorage.push(taskObject);
+  }
+  //CL
+  // console.log(dataStorage);
+  var data = {
+    list_to_save: JSON.stringify(dataStorage)
+  }
+  $.post("/save", data, function(data) {
 
-
+  });
+});
 
 
   //function updateCounter

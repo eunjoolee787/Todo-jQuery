@@ -61,6 +61,10 @@ app.get('/items', function (req, res) {
 //   });//end of MongoClient.connect
 // }//end of connect_to_db
 
+// app.post('/save', function(req,res) {
+//   console.log('user sent post request');
+//   res.send("puppies");
+// });
 
 app.post('/items', function (req, res) {
   var todo = new Todo(req.body.new_item);
